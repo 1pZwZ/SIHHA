@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sihha Fitness</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Modern typography for a clean, legible look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Header with Night Mode Toggle -->
+        <header id="app-header">
+            <h1>Sihha</h1>
+            <button id="theme-toggle" aria-label="Toggle Night Mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="content">
+            <!-- Calories View -->
+            <section id="view-calories" class="view-section active">
+                <h2>Calories Counter</h2>
+                <p>Content coming in Step 3.</p>
+            </section>
+            
+            <!-- Schedule View -->
+            <section id="view-schedule" class="view-section">
+                <h2>Workout Schedule</h2>
+                <p>Content coming in Step 4.</p>
+            </section>
+
+            <!-- Timer View -->
+            <section id="view-timer" class="view-section">
+                <h2>Workout Timer</h2>
+                <p>Content coming in Step 5.</p>
+            </section>
+
+            <!-- Trophies View -->
+            <section id="view-trophies" class="view-section">
+                <h2>Trophy Room</h2>
+                <p>Content coming in Step 6.</p>
+            </section>
+        </main>
+        
+        <!-- Bottom Navigation Bar -->
+        <nav id="bottom-nav">
+            <button class="nav-btn active" data-target="view-calories">
+                <i class="fas fa-fire"></i>
+                <span>Calories</span>
+            </button>
+            <button class="nav-btn" data-target="view-schedule">
+                <i class="fas fa-calendar-check"></i>
+                <span>Schedule</span>
+            </button>
+            <button class="nav-btn" data-target="view-timer">
+                <i class="fas fa-stopwatch"></i>
+                <span>Timer</span>
+            </button>
+            <button class="nav-btn" data-target="view-trophies">
+                <i class="fas fa-trophy"></i>
+                <span>Trophies</span>
+            </button>
+        </nav>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
