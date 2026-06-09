@@ -25,8 +25,49 @@
         <main id="content">
             <!-- Calories View -->
             <section id="view-calories" class="view-section active">
-                <h2>Calories Counter</h2>
-                <p>Content coming in Step 3.</p>
+                <h2>Today's Calories</h2>
+                
+                <!-- Summary Card -->
+                <div class="card summary-card">
+                    <div class="progress-bar-container">
+                        <div id="cal-progress" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="cal-stats">
+                        <div class="stat">
+                            <span class="label">Consumed</span>
+                            <span id="cal-consumed" class="value">0</span>
+                        </div>
+                        <div class="stat main-stat">
+                            <span class="label">Net Calories</span>
+                            <span id="cal-net" class="value">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Burned</span>
+                            <span id="cal-burned" class="value">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="card input-card">
+                    <h3>Log Activity</h3>
+                    <div class="input-group">
+                        <label for="cal-amount">Amount (kcal)</label>
+                        <input type="number" id="cal-amount" placeholder="e.g. 350" min="0">
+                    </div>
+                    <div class="input-actions">
+                        <button class="btn btn-add" id="btn-add-food">
+                            <i class="fas fa-utensils"></i> Add Food
+                        </button>
+                        <button class="btn btn-burn" id="btn-add-burn">
+                            <i class="fas fa-fire-alt"></i> Add Burn
+                        </button>
+                    </div>
+                    <!-- Reset button for today -->
+                    <button class="btn btn-outline" id="btn-reset-cal" style="margin-top: 1rem; width: 100%;">
+                        <i class="fas fa-undo"></i> Reset Today
+                    </button>
+                </div>
             </section>
             
             <!-- Schedule View -->
