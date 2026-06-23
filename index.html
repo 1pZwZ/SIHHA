@@ -12,27 +12,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div id="auth-container" class="auth-overlay">
+        <div class="card auth-card">
+            <h2>Welcome to Sihha</h2>
+            <p>Log in or sign up to save your data to the cloud.</p>
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="auth-email" placeholder="you@example.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="auth-password" placeholder="••••••••">
+            </div>
+            <div class="input-actions auth-actions">
+                <button class="btn btn-add" id="btn-login">Login</button>
+                <button class="btn btn-outline" id="btn-signup">Sign Up</button>
+            </div>
+            <p id="auth-error" class="text-danger"></p>
+        </div>
+    </div>
+
     <div id="app-container">
         <!-- Header with Night Mode Toggle -->
         <header id="app-header">
             <h1>Sihha</h1>
-            <button id="theme-toggle" aria-label="Toggle Night Mode">
-                <i class="fas fa-moon"></i>
-            </button>
+            <div>
+                <button id="theme-toggle" aria-label="Toggle Night Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="auth-logout" aria-label="Log Out" style="display:none; background:none; border:none; font-size:1.25rem; color:var(--text-main); cursor:pointer; margin-left:1rem;">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
         </header>
 
         <!-- Main Content Area -->
         <main id="content">
-            <!-- Calories View -->
+            <!-- Daily Log View -->
             <section id="view-calories" class="view-section active">
-                <h2>Today's Calories</h2>
+                <h2>Daily Log</h2>
                 
                 <!-- Summary Card -->
                 <div class="card summary-card">
                     <div class="progress-bar-container">
                         <div id="cal-progress" class="progress-bar" style="width: 0%"></div>
                     </div>
-                    <div class="cal-stats">
+                    <div class="cal-stats" style="margin-bottom: 1rem;">
                         <div class="stat">
                             <span class="label">Consumed</span>
                             <span id="cal-consumed" class="value">0</span>
@@ -46,46 +71,114 @@
                             <span id="cal-burned" class="value">0</span>
                         </div>
                     </div>
+                    <div class="cal-stats">
+                        <div class="stat" style="width: 100%;">
+                            <span class="label">Protein Gained (g)</span>
+                            <span id="pro-consumed" class="value" style="color: var(--success);">0</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Input Area -->
                 <div class="card input-card">
-                    <h3>Log Activity</h3>
+                    <h3>Add Food</h3>
                     <div class="input-group">
-                        <label for="cal-amount">Amount (kcal)</label>
-                        <input type="number" id="cal-amount" placeholder="e.g. 350" min="0">
+                        <label for="food-select">Food Item</label>
+                        <select id="food-select">
+                            <option value="">Loading foods...</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="food-qty" id="food-qty-label">Quantity</label>
+                        <input type="number" id="food-qty" placeholder="e.g. 1" min="1">
                     </div>
                     <div class="input-actions">
-                        <button class="btn btn-add" id="btn-add-food">
+                        <button class="btn btn-add" id="btn-add-food" style="width: 100%;">
                             <i class="fas fa-utensils"></i> Add Food
                         </button>
-                        <button class="btn btn-burn" id="btn-add-burn">
-                            <i class="fas fa-fire-alt"></i> Add Burn
-                        </button>
                     </div>
-                    <!-- Reset button for today -->
-                    <button class="btn btn-outline" id="btn-reset-cal" style="margin-top: 1rem; width: 100%;">
-                        <i class="fas fa-undo"></i> Reset Today
-                    </button>
+                </div>
+
+                <!-- Food Log List -->
+                <div class="card">
+                    <h3>Today's Log</h3>
+                    <div id="food-log-list" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <p class="text-muted" style="font-size: 0.9rem;">No items logged today.</p>
+                    </div>
                 </div>
             </section>
             
             <!-- Schedule View -->
             <section id="view-schedule" class="view-section">
-                <h2>Workout Schedule</h2>
-                <p>Content coming in Step 4.</p>
+                <h2>Weekly Routine</h2>
+                <div class="card" id="weekly-schedule">
+                    <p class="text-muted" style="margin-bottom: 1rem; font-size: 0.9rem;">Plan your week. Checking off a day builds consistency!</p>
+                    <div id="schedule-list">
+                        <!-- Populated by JS -->
+                    </div>
+                    <button class="btn btn-outline" id="btn-save-schedule" style="width: 100%; margin-top: 1rem;">
+                        <i class="fas fa-save"></i> Save Routine
+                    </button>
+                </div>
             </section>
 
             <!-- Timer View -->
             <section id="view-timer" class="view-section">
-                <h2>Workout Timer</h2>
-                <p>Content coming in Step 5.</p>
+                <h2>Interval Timer</h2>
+                <div class="card" style="text-align: center; padding: 3rem 1rem;">
+                    <div id="timer-display" style="font-size: 4rem; font-weight: 700; color: var(--primary-color); margin-bottom: 2rem; font-variant-numeric: tabular-nums;">
+                        00:00
+                    </div>
+                    <div class="input-actions">
+                        <button class="btn" id="btn-timer-start" style="background-color: var(--success); color: white;">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn" id="btn-timer-pause" style="background-color: #f59e0b; color: white;">
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="btn" id="btn-timer-reset" style="background-color: var(--danger); color: white;">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </div>
             </section>
 
-            <!-- Trophies View -->
+            <!-- Reports View -->
             <section id="view-trophies" class="view-section">
-                <h2>Trophy Room</h2>
-                <p>Content coming in Step 6.</p>
+                <h2>Monthly Reports</h2>
+                <div class="card">
+                    <div class="input-group">
+                        <label for="report-month">Select Month</label>
+                        <input type="month" id="report-month" />
+                    </div>
+                    <button class="btn btn-add" id="btn-generate-report" style="width: 100%; margin-bottom: 1rem;">
+                        <i class="fas fa-chart-bar"></i> Generate Report
+                    </button>
+                </div>
+                
+                <div class="card" id="report-results" style="display: none;">
+                    <h3>Report Summary</h3>
+                    <div class="cal-stats" style="margin-bottom: 1.5rem; justify-content: space-around;">
+                        <div class="stat">
+                            <span class="label">Days Active</span>
+                            <span id="rep-days" class="value" style="font-size: 1.5rem; color: var(--primary-color);">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Protein</span>
+                            <span id="rep-pro" class="value" style="font-size: 1.5rem; color: var(--success);">0g</span>
+                        </div>
+                    </div>
+                    <div class="cal-stats" style="justify-content: space-around;">
+                        <div class="stat">
+                            <span class="label">Total Consumed</span>
+                            <span id="rep-consumed" class="value" style="font-size: 1.25rem; color: var(--danger);">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Total Burned</span>
+                            <span id="rep-burned" class="value" style="font-size: 1.25rem; color: var(--primary-color);">0</span>
+                        </div>
+                    </div>
+                </div>
             </section>
         </main>
         
@@ -104,12 +197,12 @@
                 <span>Timer</span>
             </button>
             <button class="nav-btn" data-target="view-trophies">
-                <i class="fas fa-trophy"></i>
-                <span>Trophies</span>
+                <i class="fas fa-chart-pie"></i>
+                <span>Reports</span>
             </button>
         </nav>
     </div>
     
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
